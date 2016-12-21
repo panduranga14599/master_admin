@@ -1,0 +1,121 @@
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-xl-12">
+            <h2 class="page-header">
+                Revenue Forecast
+            </h2>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">       
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6" style="text-align:right;padding-top:5px">Year</div>
+            <div class="col-xs-6" style="padding:0">
+             
+                 <select  [(ngModel)]="year_id" class="form-control">
+                    <option *ngFor="let year of years" value= {{year.id}}>
+                        {{year.name}}
+                      </option>
+                </select>
+            </div>
+        </div>    
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6"  style="text-align:right;padding-top:5px">Customer Name</div>
+            <div class="col-xs-6" style="padding:0">
+                <select [(ngModel)]="customer_id" class="form-control">
+                    <option *ngFor="let customer of customers" value= {{customer.id}}>
+                        {{customer.name}}
+                      </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6"><button class="btn btn-primary" (click)="revenueview()">Proceed</button></div>            
+        </div>
+    </div>
+    <section>
+        <div class="row" [hidden]="!revenuetable">        
+            <div class="card card-block" >
+                <div class="col-xs-12"><button class="btn btn-primary" (click)="edited=!edited">Add New Revenue</button></div>
+                <div class="col-xs-12" style="padding:10px 0"  [hidden]="!edited">
+                    
+                    <div>
+                        <div class="col-xs-2">
+                            <select [(ngModel)]="month_id" class="form-control" placeholder="Select Month">
+                                <option *ngFor="let month of months" value= {{month.id}}>
+                                    {{month.name}}
+                                  </option>
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <select [(ngModel)]="revenue_type" class="form-control" placeholder="Revenue Type">
+                                <option>Select Revenue Type</option>
+                                <option>forecast</option>
+                                <option>actual</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <input [(ngModel)]="revenue_offshore" type="text" placeholder="Revenue Offshore" class="form-control">
+                        </div>
+                        <div class="col-xs-2">
+                            <input [(ngModel)]="revenue_onsite" type="text" placeholder="Revenue Onsite" class="form-control">
+                        </div>
+                        <div class="col-xs-2">
+                            <button class="btn btn-primary" (click)="addRevenue()">Submit</button>
+                        </div>
+                    </div>
+                </div>                     
+                <div class="table-responsive" style="padding:20px 0">  
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>Month</td>
+                                <td colspan="2">Revenue</td>
+                                <td colspan="2">Increase/Decrease</td>
+                                <td colspan="2">Cummilate</td>
+                                <td>Total</td>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>Offshore</td>
+                                <td>Onsite</td>
+                                <td>Offshore</td>
+                                <td>Onsite</td>
+                                <td>Offshore</td>
+                                <td>&Onsite</td>
+                                <td >&nbsp;</td>
+                                <td >&nbsp;</td>
+                            </tr>
+                             <tr *ngFor="let revenue of revenues">
+                                <td style="background:#ddd;">{{revenue.name}}</td>
+                                <td>
+                                    <div [hidden]="(edit===true&&editMonthId===revenue.id_revenue)">{{revenue.revenue_offshore}}</div>
+                                    <div [hidden]="(edit===false||(edit===true&&editMonthId!==revenue.id_revenue))"><input class="form-control" type="text" [(ngModel)]="edit_revenue_offshore"></div>
+                                </td>
+                                <td>
+                                    <div [hidden]="(edit===true&&editMonthId===revenue.id_revenue)">{{revenue.revenue_onsite}}</div>
+                                    <div [hidden]="(edit===false||(edit===true&&editMonthId!==revenue.id_revenue))"><input class="form-control" type="text" [(ngModel)]="edit_revenue_onsite"></div>
+                                </td>
+                                <td style="background:#ddd;">{{revenue.incdec_offshore}}</td>
+                                <td style="background:#ddd;">{{revenue.incdec_onsite}}</td>
+                                <td style="background:#ddd;">{{revenue.cummilate_offshore}}</td>
+                                <td style="background:#ddd;">{{revenue.cummilate_onsite}}</td>
+                                <td style="background:#ddd;">{{revenue.revenue_total}}</td>
+                                <td>
+                                    <button [hidden]="(edit===true&&editMonthId===revenue.id_revenue)" class="btn btn-primary" (click)="editRow(revenue)">Edit</button>
+                                    <button [hidden]="(edit===false||(edit===true&&editMonthId!==revenue.id_revenue))" class="btn btn-primary" (click)="saveRow(revenue.id_revenue)">Save</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>     
+                </div>
+            </div>
+        </div>
+    </section>
+   
+</div>

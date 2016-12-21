@@ -1,0 +1,159 @@
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-xl-12">
+            <h2 class="page-header">
+                Resource Forecast
+            </h2>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6"  style="text-align:right;padding-top:5px">Delivery Director</div>
+            <div class="col-xs-6" style="padding:0">
+                <select [(ngModel)]="selectedObject" class="form-control">
+                    <option *ngFor="let country of countries" value= {{country.id}}>
+                        {{country.name}}
+                      </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6" style="text-align:right;padding-top:5px">Year</div>
+            <div class="col-xs-6" style="padding:0">
+             <!--    <select class="form-control">
+                    <option>2016-2017</option>
+                    <option>2017-2018</option>
+                </select> -->
+                 <select  [(ngModel)]="year_id" class="form-control">
+                    <option *ngFor="let year of years" value= {{year.id}}>
+                        {{year.name}}
+                      </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6"><button class="btn btn-primary" (click)="updateSelectedValue()">Proceed</button></div>            
+        </div>
+    </div>
+
+     <div class="row" [hidden]="!showGreeting">
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6"  style="text-align:right;padding-top:5px">Customer Name</div>
+            <div class="col-xs-6" style="padding:0">
+                <select [(ngModel)]="customer_id" class="form-control">
+                    <option *ngFor="let client of clients" value= {{client.id}}>
+                        {{client.name}}
+                      </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6" style="text-align:right;padding-top:5px">Month</div>
+            <div class="col-xs-6" style="padding:0">
+                <!-- <select class="form-control">
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
+                </select> -->
+                 <select  [(ngModel)]="month_id" class="form-control">
+                    <option *ngFor="let month of months" value= {{month.id}}>
+                        {{month.name}}
+                      </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-4 form-group">
+            <div class="col-xs-6"><button class="btn btn-primary" (click)="updatemonth()">Submit</button></div>            
+        </div>
+    </div>
+    <div class="row" [hidden]="!show">        
+        <div class="card card-block" >
+            <div class="col-xs-12">
+                <div class="col-xs-4">Month:<b>{{name}}</b></div>
+                <div class="col-xs-6">Customer Name:<b></b></div>
+                <div class="col-xs-2">
+                    <button class="btn btn-primary" (click)="edited=!edited">Add New HCC</button>
+                </div>
+            </div>
+            <div class="col-xs-12" style="padding:10px 0"  [hidden]="!edited">
+                
+                    <div>
+                        <div class="col-xs-2">
+                            <select [(ngModel)]="hcc_id" class="form-control" placeholder="Select Hcc">
+                                <option *ngFor="let hcc of hccs" value= {{hcc.id}}>
+                                    {{hcc.name}}
+                                  </option>
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <select [(ngModel)]="resource_type" class="form-control" placeholder="resourcetype">
+                                <option>Select Resource Type</option>
+                                <option>offshore</option>
+                                <option>onsite</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <input [(ngModel)]="head_count" type="text" placeholder="Opening Resource" class="form-control">
+                        </div>
+                        <div class="col-xs-2">
+                            <input [(ngModel)]="resource_add" type="text" placeholder="Add Resource" class="form-control">
+                        </div>
+                        <div class="col-xs-2">
+                            <input [(ngModel)]="resource_reduce" type="text" placeholder="Reduce Resource" class="form-control">
+                        </div>
+                        <div class="col-xs-2">
+                            <button class="btn btn-primary" (click)="addHcc()">Submit</button>
+                        </div>
+                    </div>
+            </div>                     
+            <div class="table-responsive" style="padding:20px 0">  
+                <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Hcc Name</th>
+                        <th>Resource Type</th>
+                        <th>Open Resources</th>
+                        <th>Add Resource</th>
+                        <th>Close Resources</th>
+                        <th>Total Resources</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let resource of resources">
+                            <td style="background:#ddd;">{{resource.name}}</td>
+                            <td style="background:#ddd;">{{resource.resource_type}}</td>
+                            <td style="background:#ddd;">{{resource.head_count}}</td>
+                            <td>
+                                <div [hidden]="(edit===true&&editHccId===resource.id_resourcefc)">{{resource.resource_add}}</div>
+                                <div [hidden]="(edit===false||(edit===true&&editHccId!==resource.id_resourcefc))"><input class="form-control" type="text" [(ngModel)]="edit_resource_add"></div>
+                            </td>
+                            <td>
+                                <div [hidden]="(edit===true&&editHccId===resource.id_resourcefc)">{{resource.resource_reduce}}</div>
+                                <div [hidden]="(edit===false||(edit===true&&editHccId!==resource.id_resourcefc))"><input class="form-control" type="text" [(ngModel)]="edit_resource_reduce"></div>
+                            </td>
+                            <td style="background:#ddd;">{{resource.resource_close}}</td>
+                            <td>
+                                <button [hidden]="(edit===true&&editHccId===resource.id_resourcefc)" class="btn btn-primary" (click)="editRow(resource)">Edit</button>
+                                <button [hidden]="(edit===false||(edit===true&&editHccId!==resource.id_resourcefc))" class="btn btn-primary" (click)="saveRow(resource.id_resourcefc)">Save</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                  </table>      
+            </div>
+        </div>
+    </div>
+ 
+</div>
